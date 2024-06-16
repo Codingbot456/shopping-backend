@@ -3,7 +3,7 @@ const db = require('../config/db');
 // Create Product
 exports.createProduct = (req, res) => {
     const { name, price, description, category_id, subcategory_id } = req.body;
-    const imageUrl = req.file ? `http://localhost:4000/images/${req.file.filename}` : null;
+    const imageUrl = req.file ? `${process.env.BASE_URL}/images/${req.file.filename}` : null;
 
     db.query(
         'INSERT INTO products (name, price, description, image_url, category_id, subcategory_id) VALUES (?, ?, ?, ?, ?, ?)',
@@ -18,6 +18,7 @@ exports.createProduct = (req, res) => {
         }
     );
 };
+
 
 // Get Products
 exports.getProducts = (req, res) => {
@@ -35,7 +36,7 @@ exports.getProducts = (req, res) => {
 exports.updateProduct = (req, res) => {
     const { id } = req.params;
     const { name, price, description, category_id, subcategory_id } = req.body;
-    const imageUrl = req.file ? `http://localhost:4000/images/${req.file.filename}` : null;
+    const imageUrl = req.file ? `${process.env.BASE_URL}/images/${req.file.filename}` : null;
 
     db.query(
         'UPDATE products SET name = ?, price = ?, description = ?, image_url = ?, category_id = ?, subcategory_id = ? WHERE id = ?',
@@ -50,6 +51,7 @@ exports.updateProduct = (req, res) => {
         }
     );
 };
+
 
 // Delete Product
 exports.deleteProduct = (req, res) => {
