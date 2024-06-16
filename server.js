@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const favicon = require('serve-favicon');
 const app = express();
 const PORT = 4000;
 
