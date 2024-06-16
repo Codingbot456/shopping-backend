@@ -1,4 +1,4 @@
-const mysql = require('mysql2'); // Use mysql2 instead of mysql
+const mysql = require('mysql'); // Use mysql2 instead of mysql
 require('dotenv').config();
 
 const connection = mysql.createConnection(process.env.MYSQL_URL);
