@@ -1,0 +1,9 @@
+[setup]
+nodejs = "18"
+npm = "9_x"
+
+[install]
+commands = ["npm ci"]
+
+[start]
+commands = ["npm run start"]
