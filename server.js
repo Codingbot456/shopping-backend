@@ -15,7 +15,7 @@ const searchRoutes = require('./routes/searchRoutes');
 
 // CORS configuration
 const corsOptions = {
-    origin: 'http://localhost:3000', // Update to your frontend URL
+    origin: 'https://eccomerce-fronted.vercel.app', // Update to your frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     optionsSuccessStatus: 200 // For legacy browser support
