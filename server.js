@@ -15,13 +15,16 @@ const searchRoutes = require('./routes/searchRoutes');
 
 // CORS configuration
 const corsOptions = {
-    origin: 'https://eccomerce-fronted.vercel.app',
-    optionsSuccessStatus: 200
+    origin: 'http://localhost:3000', // Update to your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200 // For legacy browser support
 };
 
 // Middleware
-app.use(cors(corsOptions)); // CORS should be applied before other middleware
+app.use(cors(corsOptions)); // Enable CORS with specific options
 app.options('*', cors(corsOptions)); // Handle preflight requests
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
