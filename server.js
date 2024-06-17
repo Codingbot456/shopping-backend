@@ -15,16 +15,15 @@ const searchRoutes = require('./routes/searchRoutes');
 
 // CORS configuration
 const corsOptions = {
-origin: 'https://eccomerce-fronted.vercel.app', // Update to your frontend URL
-methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-allowedHeaders: ['Content-Type', 'Authorization'],
-optionsSuccessStatus: 200 // For legacy browser support
+  origin: 'https://eccomerce-fronted.vercel.app', // Update to your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200 // For legacy browser support
 };
 
 // Middleware
 app.use(cors(corsOptions)); // Enable CORS with specific options
 app.options('*', cors(corsOptions)); // Handle preflight requests
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
@@ -37,7 +36,8 @@ app.use('/', apiRouter);
 app.use('/api/orders', orderRoutes);
 app.use('/api', searchRoutes);
 
-// Start the server
-app.listen(PORT, () => {
-console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Export app for serverless function
+module.exports = async (req, res) => {
+  // Ensure middleware is run for each request
+  app(req, res);
+};
