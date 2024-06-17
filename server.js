@@ -7,47 +7,35 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.json());
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
-
-// CORS configuration
-const allowedOrigins = ['https://eccomerce-fronted.vercel.app', 'http://localhost:3000']; // Add additional origins as needed
-
-app.use(cors({
-    origin: function (origin, callback) {
-        // Check if the origin is allowed
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    optionsSuccessStatus: 200 // For legacy browser support
-}));
-
-// Routes
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const apiRouter = require('./routes/api');
 const orderRoutes = require('./routes/orderRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 
-app.use('/api/products', productRoutes); // Adjust according to your route structure
-app.use('/api/auth', authRoutes); // Adjust according to your route structure
-app.use('/api/orders', orderRoutes); // Adjust according to your route structure
-app.use('/api/search', searchRoutes); // Adjust according to your route structure
-app.use('/api', apiRouter); // Adjust according to your route structure
+// CORS configuration
+const corsOptions = {
+    origin: 'https://eccomerce-fronted.vercel.app', // Update to your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200 // For legacy browser support
+};
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
-});
+// Middleware
+app.use(cors(corsOptions)); // Enable CORS with specific options
+app.options('*', cors(corsOptions)); // Handle preflight requests
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
+// Routes
+app.use('/api', productRoutes);
+app.use('/api', authRoutes);
+app.use('/', apiRouter);
+app.use('/api/orders', orderRoutes);
+app.use('/api', searchRoutes);
 
 // Start the server
 app.listen(PORT, () => {
