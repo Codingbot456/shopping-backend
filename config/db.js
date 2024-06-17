@@ -16,7 +16,7 @@ console.log('MYSQLDATABASE:', process.env.MYSQLDATABASE);
 
 // Create a pool instead of a single connection
 const pool = mysql.createPool({
-    connectionLimit: 10, // Adjust as per your application needs
+    connectionLimit: 1000, // Adjust as per your application needs
     host: process.env.MYSQLHOST,
     port: process.env.MYSQLPORT,
     user: process.env.MYSQLUSER,
