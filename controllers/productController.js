@@ -1,7 +1,19 @@
-// Create Product
-
+// Import required modules
+const { Request, Response } = require('node-fetch');
 const pool = require('../config/db'); // Adjust path as per your project structure
 
+// Constants
+export const maxDuration = 500; // This function can run for a maximum of 5 seconds
+export const dynamic = 'force-dynamic';
+
+// GET function
+export function GET(request) {
+    return new Response('Vercel', {
+        status: 200,
+    });
+}
+
+// Create Product
 exports.createProduct = (req, res) => {
     const { name, price, description, category_id, subcategory_id } = req.body;
     const imageUrl = req.file ? `${process.env.BASE_URL}/images/${req.file.filename}` : null;
