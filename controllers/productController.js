@@ -1,20 +1,17 @@
-// Import required modules
-const { Request, Response } = require('node-fetch');
+const axios = require('axios');
 const pool = require('../config/db'); // Adjust path as per your project structure
 
 // Constants
-export const maxDuration = 500; // This function can run for a maximum of 5 seconds
-export const dynamic = 'force-dynamic';
+const maxDuration = 300; // This function can run for a maximum of 5 minutes
+const dynamic = 'force-dynamic';
 
 // GET function
-export function GET(request) {
-    return new Response('Vercel', {
-        status: 200,
-    });
-}
+const GET = (request, response) => {
+    response.status(200).send('Vercel');
+};
 
 // Create Product
-exports.createProduct = (req, res) => {
+const createProduct = (req, res) => {
     const { name, price, description, category_id, subcategory_id } = req.body;
     const imageUrl = req.file ? `${process.env.BASE_URL}/images/${req.file.filename}` : null;
 
@@ -32,7 +29,7 @@ exports.createProduct = (req, res) => {
 };
 
 // Get Products
-exports.getProducts = (req, res) => {
+const getProducts = (req, res) => {
     pool.query('SELECT * FROM products', (err, results) => {
         if (err) {
             console.error('Error fetching products:', err);
@@ -44,7 +41,7 @@ exports.getProducts = (req, res) => {
 };
 
 // Update Product
-exports.updateProduct = (req, res) => {
+const updateProduct = (req, res) => {
     const { id } = req.params;
     const { name, price, description, category_id, subcategory_id } = req.body;
     const imageUrl = req.file ? `${process.env.BASE_URL}/images/${req.file.filename}` : null;
@@ -63,7 +60,7 @@ exports.updateProduct = (req, res) => {
 };
 
 // Delete Product
-exports.deleteProduct = (req, res) => {
+const deleteProduct = (req, res) => {
     const { id } = req.params;
 
     pool.execute('DELETE FROM products WHERE id = ?', [id])
@@ -77,7 +74,7 @@ exports.deleteProduct = (req, res) => {
 };
 
 // Method to get products by category
-exports.getProductsByCategory = (req, res) => {
+const getProductsByCategory = (req, res) => {
     const categoryId = req.params.categoryId;
 
     pool.query('SELECT * FROM products WHERE category_id = ?', [categoryId], (err, results) => {
@@ -91,7 +88,7 @@ exports.getProductsByCategory = (req, res) => {
 };
 
 // Method to get products by subcategory
-exports.getProductsBySubcategoryId = (req, res) => {
+const getProductsBySubcategoryId = (req, res) => {
     const { subcategory_id } = req.params;
 
     if (isNaN(subcategory_id)) {
@@ -109,7 +106,7 @@ exports.getProductsBySubcategoryId = (req, res) => {
 };
 
 // Method to get all products
-exports.getAllProducts = (req, res) => {
+const getAllProducts = (req, res) => {
     pool.query('SELECT * FROM products', (err, results) => {
         if (err) {
             console.error('Error fetching all products:', err);
@@ -121,7 +118,7 @@ exports.getAllProducts = (req, res) => {
 };
 
 // Method to get product by ID
-exports.getProductById = (req, res) => {
+const getProductById = (req, res) => {
     const productId = req.params.id;
 
     pool.query('SELECT * FROM products WHERE id = ?', [productId], (err, results) => {
@@ -137,7 +134,7 @@ exports.getProductById = (req, res) => {
 };
 
 // Method to get products for Men category
-exports.getMenProducts = (req, res) => {
+const getMenProducts = (req, res) => {
     pool.query(`
         SELECT p.*
         FROM products p
@@ -152,4 +149,19 @@ exports.getMenProducts = (req, res) => {
             res.json(results);
         }
     });
+};
+
+module.exports = {
+    maxDuration,
+    dynamic,
+    GET,
+    createProduct,
+    getProducts,
+    updateProduct,
+    deleteProduct,
+    getProductsByCategory,
+    getProductsBySubcategoryId,
+    getAllProducts,
+    getProductById,
+    getMenProducts,
 };
