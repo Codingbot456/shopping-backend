@@ -21,7 +21,12 @@ const pool = mysql.createPool({
     port: process.env.MYSQLPORT,
     user: process.env.MYSQLUSER,
     password: process.env.MYSQLPASSWORD,
-    database: process.env.MYSQLDATABASE
+    database: process.env.MYSQLDATABASE,
+    waitForConnections:true,
+    queueLimit:0,
+    connectTimeout:20000,
+    aquireTimeout:20000,
+    timeout:20000
 });
 
 // Check if the pool is successfully created
